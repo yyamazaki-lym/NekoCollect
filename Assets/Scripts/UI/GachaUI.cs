@@ -37,6 +37,13 @@ namespace NekoCollect.UI
             if (!initialized)
             {
                 initialized = true;
+
+                // パネル背景を追加
+                SetupPanelBackground();
+
+                // ガチャ結果パネルのセットアップ
+                SetupResultPanel();
+
                 pullButton.onClick.AddListener(OnPull);
                 backButton.onClick.AddListener(() => UIManager.Instance.ShowHome());
                 resultCloseButton?.onClick.AddListener(() => resultPanel?.SetActive(false));
@@ -50,6 +57,46 @@ namespace NekoCollect.UI
         {
             if (GachaManager.Instance != null)
                 GachaManager.Instance.OnGachaResult -= ShowResult;
+        }
+
+        /// <summary>
+        /// パネルに背景色を追加
+        /// </summary>
+        private void SetupPanelBackground()
+        {
+            var bg = GetComponent<Image>();
+            if (bg == null)
+            {
+                if (GetComponent<CanvasRenderer>() == null)
+                    gameObject.AddComponent<CanvasRenderer>();
+                bg = gameObject.AddComponent<Image>();
+            }
+            bg.color = new Color(0.12f, 0.12f, 0.18f, 1f);
+            bg.raycastTarget = true;
+        }
+
+        /// <summary>
+        /// ガチャ結果パネルを全画面オーバーレイとして設定
+        /// </summary>
+        private void SetupResultPanel()
+        {
+            if (resultPanel == null) return;
+
+            var rt = resultPanel.GetComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.anchoredPosition = Vector2.zero;
+            rt.sizeDelta = Vector2.zero;
+
+            var bg = resultPanel.GetComponent<Image>();
+            if (bg == null)
+            {
+                if (resultPanel.GetComponent<CanvasRenderer>() == null)
+                    resultPanel.AddComponent<CanvasRenderer>();
+                bg = resultPanel.AddComponent<Image>();
+            }
+            bg.color = new Color(0.05f, 0.05f, 0.12f, 0.95f);
+            bg.raycastTarget = true;
         }
 
         private void SetupBannerButtons()
@@ -93,7 +140,8 @@ namespace NekoCollect.UI
 
         private void ShowResult(CatData cat, bool isNew)
         {
-            resultPanel?.SetActive(true);
+            if (resultPanel == null) return;
+
             resultCatImage.sprite = cat.sprite;
             resultCatName.text = cat.catName;
             resultRarity.text = cat.rarity.ToString();
@@ -109,6 +157,10 @@ namespace NekoCollect.UI
 
             resultNewLabel.text = isNew ? "NEW!" : "経験値ボーナス!";
             resultNewLabel.gameObject.SetActive(true);
+
+            // 最前面に表示
+            resultPanel.transform.SetAsLastSibling();
+            resultPanel.SetActive(true);
         }
     }
 }

@@ -24,9 +24,29 @@ namespace NekoCollect.UI
             if (!initialized)
             {
                 initialized = true;
+
+                // パネル背景を追加
+                SetupPanelBackground();
+
                 backButton.onClick.AddListener(() => UIManager.Instance.ShowHome());
             }
             RefreshList();
+        }
+
+        /// <summary>
+        /// パネルに背景色を追加
+        /// </summary>
+        private void SetupPanelBackground()
+        {
+            var bg = GetComponent<Image>();
+            if (bg == null)
+            {
+                if (GetComponent<CanvasRenderer>() == null)
+                    gameObject.AddComponent<CanvasRenderer>();
+                bg = gameObject.AddComponent<Image>();
+            }
+            bg.color = new Color(0.12f, 0.12f, 0.18f, 1f);
+            bg.raycastTarget = true;
         }
 
         private void RefreshList()
@@ -53,8 +73,20 @@ namespace NekoCollect.UI
             if (image != null) image.sprite = catData.sprite;
 
             var texts = card.GetComponentsInChildren<TextMeshProUGUI>();
-            if (texts.Length > 0) texts[0].text = catData.catName;
-            if (texts.Length > 1) texts[1].text = $"Lv.{owned.level}";
+            if (texts.Length > 0)
+            {
+                texts[0].text = catData.catName;
+                texts[0].enableAutoSizing = true;
+                texts[0].fontSizeMin = 10;
+                texts[0].fontSizeMax = 24;
+            }
+            if (texts.Length > 1)
+            {
+                texts[1].text = $"Lv.{owned.level}";
+                texts[1].enableAutoSizing = true;
+                texts[1].fontSizeMin = 10;
+                texts[1].fontSizeMax = 20;
+            }
 
             // タップで詳細画面を開く
             var button = card.GetComponent<Button>();
