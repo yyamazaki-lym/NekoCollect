@@ -110,11 +110,7 @@ namespace NekoCollect.UI
         /// </summary>
         private void AdjustLayout()
         {
-            // 猫画像を小さめにして上部に
-            SetRect(catImage, 0, 0.72f, 1, 0.95f);
-            catImage.preserveAspect = true;
-
-            // 猫画像を上部に（少し小さめ）
+            // 猫画像を上部に
             SetRect(catImage, 0.25f, 0.75f, 0.75f, 0.97f);
             catImage.preserveAspect = true;
 
