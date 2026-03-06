@@ -118,13 +118,13 @@ namespace NekoCollect.UI
                 detailDescription.fontSizeMax = 28;
             }
 
-            SetRect(detailCloseButton, 0.3f, 0.10f, 0.7f, 0.18f);
+            SetRect(detailCloseButton, 0.35f, 0.12f, 0.65f, 0.16f);
             var btnText = detailCloseButton?.GetComponentInChildren<TextMeshProUGUI>();
             if (btnText != null)
             {
                 btnText.enableAutoSizing = true;
                 btnText.fontSizeMin = 16;
-                btnText.fontSizeMax = 36;
+                btnText.fontSizeMax = 30;
             }
         }
 

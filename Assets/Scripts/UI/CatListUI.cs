@@ -77,15 +77,17 @@ namespace NekoCollect.UI
             {
                 texts[0].text = catData.catName;
                 texts[0].enableAutoSizing = true;
-                texts[0].fontSizeMin = 10;
-                texts[0].fontSizeMax = 24;
+                texts[0].fontSizeMin = 14;
+                texts[0].fontSizeMax = 28;
+                texts[0].alignment = TextAlignmentOptions.Center;
             }
             if (texts.Length > 1)
             {
                 texts[1].text = $"Lv.{owned.level}";
                 texts[1].enableAutoSizing = true;
-                texts[1].fontSizeMin = 10;
-                texts[1].fontSizeMax = 20;
+                texts[1].fontSizeMin = 14;
+                texts[1].fontSizeMax = 24;
+                texts[1].alignment = TextAlignmentOptions.Center;
             }
 
             // タップで詳細画面を開く

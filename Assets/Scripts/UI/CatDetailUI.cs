@@ -114,74 +114,78 @@ namespace NekoCollect.UI
             SetRect(catImage, 0, 0.72f, 1, 0.95f);
             catImage.preserveAspect = true;
 
-            // 名前
-            SetRect(catNameText, 0.1f, 0.65f, 0.9f, 0.72f);
+            // 猫画像を上部に（少し小さめ）
+            SetRect(catImage, 0.25f, 0.75f, 0.75f, 0.97f);
+            catImage.preserveAspect = true;
+
+            // 名前（大きめ）
+            SetRect(catNameText, 0.05f, 0.68f, 0.95f, 0.75f);
             catNameText.alignment = TextAlignmentOptions.Center;
             catNameText.enableAutoSizing = true;
-            catNameText.fontSizeMin = 16;
-            catNameText.fontSizeMax = 40;
+            catNameText.fontSizeMin = 20;
+            catNameText.fontSizeMax = 42;
 
             // レアリティ
-            SetRect(rarityText, 0.3f, 0.61f, 0.7f, 0.66f);
+            SetRect(rarityText, 0.2f, 0.63f, 0.8f, 0.68f);
             rarityText.alignment = TextAlignmentOptions.Center;
             rarityText.enableAutoSizing = true;
-            rarityText.fontSizeMin = 14;
-            rarityText.fontSizeMax = 28;
+            rarityText.fontSizeMin = 16;
+            rarityText.fontSizeMax = 30;
 
             // レベル
-            SetRect(levelText, 0.2f, 0.57f, 0.8f, 0.62f);
+            SetRect(levelText, 0.15f, 0.58f, 0.85f, 0.63f);
             levelText.alignment = TextAlignmentOptions.Center;
             levelText.enableAutoSizing = true;
-            levelText.fontSizeMin = 14;
+            levelText.fontSizeMin = 16;
             levelText.fontSizeMax = 28;
 
             // 経験値バー
-            SetRect(expBar, 0.15f, 0.54f, 0.85f, 0.57f);
+            SetRect(expBar, 0.1f, 0.55f, 0.9f, 0.58f);
 
             // 経験値テキスト
-            SetRect(expText, 0.2f, 0.50f, 0.8f, 0.54f);
+            SetRect(expText, 0.2f, 0.51f, 0.8f, 0.55f);
             expText.alignment = TextAlignmentOptions.Center;
             expText.enableAutoSizing = true;
-            expText.fontSizeMin = 12;
+            expText.fontSizeMin = 14;
             expText.fontSizeMax = 24;
 
-            // ステータス3種
+            // ステータス3種（余裕を持たせる）
             SetRect(friendlinessText, 0.05f, 0.45f, 0.95f, 0.50f);
             friendlinessText.alignment = TextAlignmentOptions.Center;
             friendlinessText.enableAutoSizing = true;
-            friendlinessText.fontSizeMin = 12;
-            friendlinessText.fontSizeMax = 24;
+            friendlinessText.fontSizeMin = 16;
+            friendlinessText.fontSizeMax = 26;
 
-            SetRect(energyText, 0.05f, 0.41f, 0.95f, 0.45f);
+            SetRect(energyText, 0.05f, 0.40f, 0.95f, 0.45f);
             energyText.alignment = TextAlignmentOptions.Center;
             energyText.enableAutoSizing = true;
-            energyText.fontSizeMin = 12;
-            energyText.fontSizeMax = 24;
+            energyText.fontSizeMin = 16;
+            energyText.fontSizeMax = 26;
 
-            SetRect(cutenessText, 0.05f, 0.37f, 0.95f, 0.41f);
+            SetRect(cutenessText, 0.05f, 0.35f, 0.95f, 0.40f);
             cutenessText.alignment = TextAlignmentOptions.Center;
             cutenessText.enableAutoSizing = true;
-            cutenessText.fontSizeMin = 12;
-            cutenessText.fontSizeMax = 24;
+            cutenessText.fontSizeMin = 16;
+            cutenessText.fontSizeMax = 26;
 
-            // スキルリスト
-            SetRect(skillListContainer, 0.05f, 0.22f, 0.95f, 0.36f);
+            // スキルリスト（余裕を持たせる）
+            SetRect(skillListContainer, 0.05f, 0.20f, 0.95f, 0.34f);
 
-            // 餌ボタン2つ（横並び）
-            SetRect(feedCheapButton, 0.05f, 0.12f, 0.48f, 0.21f);
-            SetRect(feedPremiumButton, 0.52f, 0.12f, 0.95f, 0.21f);
+            // 餌ボタン2つ（横並び、十分な高さ）
+            SetRect(feedCheapButton, 0.05f, 0.11f, 0.48f, 0.19f);
+            SetRect(feedPremiumButton, 0.52f, 0.11f, 0.95f, 0.19f);
 
             // 進化ボタン
-            SetRect(evolveButton, 0.15f, 0.05f, 0.85f, 0.11f);
+            SetRect(evolveButton, 0.15f, 0.05f, 0.85f, 0.10f);
 
             // 戻るボタン
-            SetRect(backButton, 0.3f, 0.01f, 0.7f, 0.05f);
+            SetRect(backButton, 0.3f, 0.005f, 0.7f, 0.045f);
 
             // 餌ボタンのテキストをAutoSizeに
-            SetAutoSize(feedCheapCostText, 10, 22);
-            SetAutoSize(feedPremiumCostText, 10, 22);
+            SetAutoSize(feedCheapCostText, 14, 24);
+            SetAutoSize(feedPremiumCostText, 14, 24);
             if (evolveInfoText != null)
-                SetAutoSize(evolveInfoText, 10, 22);
+                SetAutoSize(evolveInfoText, 14, 24);
         }
 
         /// <summary>
