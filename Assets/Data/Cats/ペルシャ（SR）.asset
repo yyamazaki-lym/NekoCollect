@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c450fdc22c91445b1b78d01ae43b69, type: 3}
+  m_Name: "\u30DA\u30EB\u30B7\u30E3\uFF08SR\uFF09"
+  m_EditorClassIdentifier: 
+  catId: cat_persian
+  catName: "\u30DA\u30EB\u30B7\u30E3"
+  rarity: 2
+  description: "\u3075\u308F\u3075\u308F\u306E\u6BDB\u4E26\u307F\u304C\u81EA\u6162\u306E\u9AD8\u7D1A\u732B"
+  sprite: {fileID: 3092063599737781914, guid: a2833fee6b87f4943848d32acf06c04f, type: 3}
+  maxLevel: 30
+  baseStats:
+    friendliness: 15
+    energy: 8
+    cuteness: 20
+  statsGrowthRate: 0.1
+  skills:
+  - {fileID: 11400000, guid: 6ab0281feb5f785418a0a05d532db47f, type: 2}
+  - {fileID: 11400000, guid: 66f1a0ace382e0b41ab4118acfa135e0, type: 2}
+  - {fileID: 11400000, guid: 20276b220c4eb494ea7ba9d9847fa6e0, type: 2}
+  evolutionTarget: {fileID: 0}
+  evolutionLevel: 0

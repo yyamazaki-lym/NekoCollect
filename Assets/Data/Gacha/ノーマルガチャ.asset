@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b6be0e1c94510e41ae14f14ec9e03f7, type: 3}
+  m_Name: "\u30CE\u30FC\u30DE\u30EB\u30AC\u30C1\u30E3"
+  m_EditorClassIdentifier: 
+  bannerName: "\u30CE\u30FC\u30DE\u30EB\u30AC\u30C1\u30E3"
+  description: "\u3044\u308D\u3093\u306A\u732B\u306B\u4F1A\u3048\u308B\u30AC\u30C1\u30E3"
+  cost: 100
+  entries:
+  - cat: {fileID: 11400000, guid: 785544708d3fa664bbf711e78444f55d, type: 2}
+    weight: 30
+  - cat: {fileID: 11400000, guid: f31c985a31df12646b71f24a2b1b0e4a, type: 2}
+    weight: 30
+  - cat: {fileID: 11400000, guid: 20643d7c5acfa914ebd327daa959a63c, type: 2}
+    weight: 20
+  - cat: {fileID: 11400000, guid: 799bf7589fcb83f4e86f3305cac87e59, type: 2}
+    weight: 15
+  - cat: {fileID: 11400000, guid: 24ccfff46bf2fac44ba4f5d710708350, type: 2}
+    weight: 4
+  - cat: {fileID: 11400000, guid: e12720312609fba44adf481d5ae79096, type: 2}
+    weight: 0.9
+  - cat: {fileID: 11400000, guid: 1550431179399cc4393332bc80deece8, type: 2}
+    weight: 0.1

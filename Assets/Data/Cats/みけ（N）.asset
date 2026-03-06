@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c450fdc22c91445b1b78d01ae43b69, type: 3}
+  m_Name: "\u307F\u3051\uFF08N\uFF09"
+  m_EditorClassIdentifier: 
+  catId: cat_mike
+  catName: "\u307F\u3051"
+  rarity: 0
+  description: "\u4E09\u6BDB\u67C4\u306E\u304A\u3063\u3068\u308A\u3057\u305F\u732B"
+  sprite: {fileID: 2416969424150287280, guid: b176326a75b3cab44975ff3d5003b8fc, type: 3}
+  maxLevel: 20
+  baseStats:
+    friendliness: 5
+    energy: 3
+    cuteness: 4
+  statsGrowthRate: 0.1
+  skills:
+  - {fileID: 11400000, guid: 6ab0281feb5f785418a0a05d532db47f, type: 2}
+  - {fileID: 11400000, guid: b20cc465950ceb144a275dcd052fb426, type: 2}
+  evolutionTarget: {fileID: 0}
+  evolutionLevel: 0
