@@ -106,82 +106,60 @@ namespace NekoCollect.UI
         }
 
         /// <summary>
-        /// UI要素の位置を再配置（重なり防止）
+        /// UI要素の位置を再配置（重なり防止・十分な余白確保）
         /// </summary>
         private void AdjustLayout()
         {
-            // 猫画像を上部に
-            SetRect(catImage, 0.25f, 0.75f, 0.75f, 0.97f);
+            // 猫画像を上部に（小さめにして下のスペースを確保）
+            SetRect(catImage, 0.30f, 0.82f, 0.70f, 0.97f);
             catImage.preserveAspect = true;
 
             // 名前（大きめ）
-            SetRect(catNameText, 0.05f, 0.68f, 0.95f, 0.75f);
-            catNameText.alignment = TextAlignmentOptions.Center;
-            catNameText.enableAutoSizing = true;
-            catNameText.fontSizeMin = 20;
-            catNameText.fontSizeMax = 42;
+            SetRect(catNameText, 0.05f, 0.74f, 0.95f, 0.82f);
+            SetAutoSizeWithMarginReset(catNameText, 18, 40);
 
-            // レアリティ
-            SetRect(rarityText, 0.2f, 0.63f, 0.8f, 0.68f);
-            rarityText.alignment = TextAlignmentOptions.Center;
-            rarityText.enableAutoSizing = true;
-            rarityText.fontSizeMin = 16;
-            rarityText.fontSizeMax = 30;
+            // レアリティ（左半分）とレベル（右半分）を同じ行に
+            SetRect(rarityText, 0.05f, 0.67f, 0.48f, 0.74f);
+            SetAutoSizeWithMarginReset(rarityText, 12, 28);
 
-            // レベル
-            SetRect(levelText, 0.15f, 0.58f, 0.85f, 0.63f);
-            levelText.alignment = TextAlignmentOptions.Center;
-            levelText.enableAutoSizing = true;
-            levelText.fontSizeMin = 16;
-            levelText.fontSizeMax = 28;
+            SetRect(levelText, 0.52f, 0.67f, 0.95f, 0.74f);
+            SetAutoSizeWithMarginReset(levelText, 12, 28);
 
             // 経験値バー
-            SetRect(expBar, 0.1f, 0.55f, 0.9f, 0.58f);
+            SetRect(expBar, 0.1f, 0.63f, 0.9f, 0.67f);
 
             // 経験値テキスト
-            SetRect(expText, 0.2f, 0.51f, 0.8f, 0.55f);
-            expText.alignment = TextAlignmentOptions.Center;
-            expText.enableAutoSizing = true;
-            expText.fontSizeMin = 14;
-            expText.fontSizeMax = 24;
+            SetRect(expText, 0.2f, 0.58f, 0.8f, 0.63f);
+            SetAutoSizeWithMarginReset(expText, 12, 24);
 
-            // ステータス3種（余裕を持たせる）
-            SetRect(friendlinessText, 0.05f, 0.45f, 0.95f, 0.50f);
-            friendlinessText.alignment = TextAlignmentOptions.Center;
-            friendlinessText.enableAutoSizing = true;
-            friendlinessText.fontSizeMin = 16;
-            friendlinessText.fontSizeMax = 26;
+            // ステータス3種（各8%の高さで十分な余白を確保）
+            SetRect(friendlinessText, 0.05f, 0.49f, 0.95f, 0.57f);
+            SetAutoSizeWithMarginReset(friendlinessText, 12, 28);
 
-            SetRect(energyText, 0.05f, 0.40f, 0.95f, 0.45f);
-            energyText.alignment = TextAlignmentOptions.Center;
-            energyText.enableAutoSizing = true;
-            energyText.fontSizeMin = 16;
-            energyText.fontSizeMax = 26;
+            SetRect(energyText, 0.05f, 0.41f, 0.95f, 0.49f);
+            SetAutoSizeWithMarginReset(energyText, 12, 28);
 
-            SetRect(cutenessText, 0.05f, 0.35f, 0.95f, 0.40f);
-            cutenessText.alignment = TextAlignmentOptions.Center;
-            cutenessText.enableAutoSizing = true;
-            cutenessText.fontSizeMin = 16;
-            cutenessText.fontSizeMax = 26;
+            SetRect(cutenessText, 0.05f, 0.33f, 0.95f, 0.41f);
+            SetAutoSizeWithMarginReset(cutenessText, 12, 28);
 
-            // スキルリスト（余裕を持たせる）
-            SetRect(skillListContainer, 0.05f, 0.20f, 0.95f, 0.34f);
+            // スキルリスト
+            SetRect(skillListContainer, 0.05f, 0.22f, 0.95f, 0.32f);
 
-            // 餌ボタン2つ（横並び、十分な高さ）
-            SetRect(feedCheapButton, 0.05f, 0.11f, 0.48f, 0.19f);
-            SetRect(feedPremiumButton, 0.52f, 0.11f, 0.95f, 0.19f);
+            // 餌ボタン2つ（横並び）
+            SetRect(feedCheapButton, 0.05f, 0.13f, 0.48f, 0.21f);
+            SetRect(feedPremiumButton, 0.52f, 0.13f, 0.95f, 0.21f);
 
             // 進化ボタン
-            SetRect(evolveButton, 0.15f, 0.05f, 0.85f, 0.10f);
+            SetRect(evolveButton, 0.15f, 0.06f, 0.85f, 0.12f);
 
             // 戻るボタン
-            SetRect(backButton, 0.3f, 0.005f, 0.7f, 0.045f);
+            SetRect(backButton, 0.3f, 0.01f, 0.7f, 0.055f);
 
             // 餌ボタンのテキストをAutoSizeに
-            SetAutoSize(feedCheapCostText, 14, 24);
-            SetAutoSize(feedPremiumCostText, 14, 24);
+            SetAutoSize(feedCheapCostText, 12, 24);
+            SetAutoSize(feedPremiumCostText, 12, 24);
             if (evolveInfoText != null)
-                SetAutoSize(evolveInfoText, 14, 24);
+                SetAutoSize(evolveInfoText, 12, 24);
         }
 
         /// <summary>
@@ -196,6 +174,22 @@ namespace NekoCollect.UI
             rt.anchorMax = new Vector2(xMax, yMax);
             rt.anchoredPosition = Vector2.zero;
             rt.sizeDelta = Vector2.zero;
+        }
+
+        /// <summary>
+        /// AutoSizeを設定し、TMPのマージンをリセットして余計なパディングを除去
+        /// </summary>
+        private void SetAutoSizeWithMarginReset(TextMeshProUGUI text, float min, float max)
+        {
+            if (text == null) return;
+            text.enableAutoSizing = true;
+            text.fontSizeMin = min;
+            text.fontSizeMax = max;
+            text.alignment = TextAlignmentOptions.Center;
+            // TMPのマージンをゼロにしてテキスト表示領域を最大化
+            text.margin = Vector4.zero;
+            // 余分なパディングを無効化
+            text.extraPadding = false;
         }
 
         private void SetAutoSize(TextMeshProUGUI text, float min, float max)
