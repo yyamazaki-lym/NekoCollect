@@ -55,7 +55,7 @@ namespace NekoCollect.UI
         }
 
         /// <summary>
-        /// パネルに背景色を追加
+        /// パネルに背景画像を設定
         /// </summary>
         private void SetupPanelBackground()
         {
@@ -66,7 +66,18 @@ namespace NekoCollect.UI
                     gameObject.AddComponent<CanvasRenderer>();
                 bg = gameObject.AddComponent<Image>();
             }
-            bg.color = new Color(0.12f, 0.12f, 0.18f, 1f);
+            var sprite = Resources.Load<Sprite>("Backgrounds/bg_catalog");
+            if (sprite != null)
+            {
+                bg.sprite = sprite;
+                bg.type = Image.Type.Simple;
+                bg.preserveAspect = false;
+                bg.color = Color.white;
+            }
+            else
+            {
+                bg.color = new Color(0.12f, 0.12f, 0.18f, 1f);
+            }
             bg.raycastTarget = true;
         }
 

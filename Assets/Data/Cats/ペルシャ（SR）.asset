@@ -16,7 +16,7 @@ MonoBehaviour:
   catName: "\u30DA\u30EB\u30B7\u30E3"
   rarity: 2
   description: "\u3075\u308F\u3075\u308F\u306E\u6BDB\u4E26\u307F\u304C\u81EA\u6162\u306E\u9AD8\u7D1A\u732B"
-  sprite: {fileID: 3092063599737781914, guid: a2833fee6b87f4943848d32acf06c04f, type: 3}
+  sprite: {fileID: 21300000, guid: a07fd4ae64c64733903f7cc4a4b7b5ac, type: 3}
   maxLevel: 30
   baseStats:
     friendliness: 15

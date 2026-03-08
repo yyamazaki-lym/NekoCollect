@@ -41,6 +41,12 @@ namespace NekoCollect.UI
 
         private void Start()
         {
+            // 背景画像を設定
+            SetupPanelBackground();
+
+            // コインアイコン設定
+            SetupCoinIcon();
+
             clickButton.onClick.AddListener(OnClickCoin);
             gachaButton.onClick.AddListener(() =>
             {
@@ -128,6 +134,50 @@ namespace NekoCollect.UI
             }
 
             offlineCoinPopup.SetActive(false);
+        }
+
+        /// <summary>
+        /// パネルに背景画像を設定
+        /// </summary>
+        private void SetupPanelBackground()
+        {
+            var bg = GetComponent<Image>();
+            if (bg == null)
+            {
+                if (GetComponent<CanvasRenderer>() == null)
+                    gameObject.AddComponent<CanvasRenderer>();
+                bg = gameObject.AddComponent<Image>();
+            }
+            var sprite = Resources.Load<Sprite>("Backgrounds/bg_home");
+            if (sprite != null)
+            {
+                bg.sprite = sprite;
+                bg.type = Image.Type.Simple;
+                bg.preserveAspect = false;
+                bg.color = Color.white;
+            }
+            else
+            {
+                bg.color = new Color(0.12f, 0.12f, 0.18f, 1f);
+            }
+            bg.raycastTarget = true;
+        }
+
+        /// <summary>
+        /// コインアイコンをクリックボタンに設定
+        /// </summary>
+        private void SetupCoinIcon()
+        {
+            var coinSprite = Resources.Load<Sprite>("UI/icon_coin");
+            if (coinSprite != null && clickButton != null)
+            {
+                var btnImage = clickButton.GetComponent<Image>();
+                if (btnImage != null)
+                {
+                    btnImage.sprite = coinSprite;
+                    btnImage.preserveAspect = true;
+                }
+            }
         }
 
         private void OnClickCoin()
