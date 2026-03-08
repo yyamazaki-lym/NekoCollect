@@ -55,6 +55,11 @@ namespace NekoCollect.UI
         {
             if (offlineCoinPopup == null) return;
 
+            // Canvas直下に移動して全パネルより上に表示されるようにする
+            var canvas = offlineCoinPopup.GetComponentInParent<Canvas>();
+            if (canvas != null)
+                offlineCoinPopup.transform.SetParent(canvas.transform);
+
             // ストレッチアンカーで全画面オーバーレイにする
             var rt = offlineCoinPopup.GetComponent<RectTransform>();
             rt.anchorMin = Vector2.zero;
