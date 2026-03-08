@@ -28,6 +28,14 @@ namespace NekoCollect.Save
         /// <summary>最終ログイン時間（DateTime.ToBinary()形式）</summary>
         public long lastLoginTimeBinary;
 
+        /// <summary>達成済み実績のIDリスト</summary>
+        public List<string> unlockedAchievements = new List<string>();
+
+        /// <summary>累計ガチャ回数</summary>
+        public int totalGachaPulls;
+        /// <summary>累計クリック回数</summary>
+        public int totalClicks;
+
         /// <summary>
         /// 最終ログイン時間をDateTimeで取得
         /// </summary>

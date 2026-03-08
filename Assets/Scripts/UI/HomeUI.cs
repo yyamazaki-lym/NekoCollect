@@ -1,12 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using NekoCollect.Data;
 using NekoCollect.Manager;
 
 namespace NekoCollect.UI
 {
     /// <summary>
-    /// ホーム画面のUI制御
+    /// ホーム画面のUI制御（所持猫表示＆タッチ反応付き）
     /// </summary>
     public class HomeUI : MonoBehaviour
     {
@@ -17,17 +20,33 @@ namespace NekoCollect.UI
         [SerializeField] private Button gachaButton;
         [SerializeField] private Button catListButton;
         [SerializeField] private Button catalogButton;
+        [SerializeField] private Button achievementButton;
 
         [Header("放置コイン通知")]
         [SerializeField] private GameObject offlineCoinPopup;
         [SerializeField] private TextMeshProUGUI offlineCoinText;
         [SerializeField] private Button offlineCloseButton;
 
+        // 所持猫表示用
+        private Transform catDisplayArea;
+        private List<GameObject> displayedCats = new List<GameObject>();
+
+        // タッチ反応テキスト
+        private static readonly string[] touchReactions = new string[]
+        {
+            "にゃ〜♪", "ゴロゴロ...", "にゃん！", "すりすり",
+            "みゃー", "ぷるるる", "にゃっ♡", "zzz...",
+            "ふにゃ〜", "にゃお！"
+        };
+
         private void OnEnable()
         {
             CoinManager.Instance.OnCoinsChanged += UpdateCoinDisplay;
             CoinManager.Instance.OnIdleCoinsCollected += ShowOfflineCoins;
             UpdateCoinDisplay(CoinManager.Instance.Coins);
+
+            // 猫表示を更新
+            RefreshCatDisplay();
         }
 
         private void OnDisable()
@@ -47,6 +66,9 @@ namespace NekoCollect.UI
             // コインアイコン設定
             SetupCoinIcon();
 
+            // 猫表示エリアを作成
+            SetupCatDisplayArea();
+
             clickButton.onClick.AddListener(OnClickCoin);
             gachaButton.onClick.AddListener(() =>
             {
@@ -63,6 +85,11 @@ namespace NekoCollect.UI
                 AudioManager.Instance?.PlayTap();
                 UIManager.Instance.ShowCatalog();
             });
+            achievementButton?.onClick.AddListener(() =>
+            {
+                AudioManager.Instance?.PlayTap();
+                UIManager.Instance.ShowAchievements();
+            });
             offlineCloseButton?.onClick.AddListener(() =>
             {
                 AudioManager.Instance?.PlayTap();
@@ -71,6 +98,186 @@ namespace NekoCollect.UI
 
             // ポップアップのセットアップ
             SetupOfflinePopup();
+        }
+
+        /// <summary>
+        /// 猫表示エリアを生成
+        /// </summary>
+        private void SetupCatDisplayArea()
+        {
+            var areaObj = new GameObject("CatDisplayArea");
+            areaObj.transform.SetParent(transform, false);
+            var rt = areaObj.AddComponent<RectTransform>();
+            // 中央エリア（ボタンの間）
+            rt.anchorMin = new Vector2(0.05f, 0.25f);
+            rt.anchorMax = new Vector2(0.95f, 0.65f);
+            rt.sizeDelta = Vector2.zero;
+            rt.anchoredPosition = Vector2.zero;
+            catDisplayArea = areaObj.transform;
+
+            // クリックボタンより背面に配置
+            areaObj.transform.SetAsFirstSibling();
+        }
+
+        /// <summary>
+        /// 所持猫をHome画面に表示
+        /// </summary>
+        private void RefreshCatDisplay()
+        {
+            if (catDisplayArea == null) return;
+
+            // 既存の猫をクリア
+            foreach (var cat in displayedCats)
+            {
+                if (cat != null) Destroy(cat);
+            }
+            displayedCats.Clear();
+
+            var ownedCats = CatCollectionManager.Instance?.GetOwnedCats();
+            if (ownedCats == null || ownedCats.Count == 0) return;
+
+            // 最大5匹まで表示
+            int displayCount = Mathf.Min(ownedCats.Count, 5);
+            for (int i = 0; i < displayCount; i++)
+            {
+                var owned = ownedCats[i];
+                var catData = CatCollectionManager.Instance.GetCatData(owned.catId);
+                if (catData == null || catData.sprite == null) continue;
+
+                CreateCatDisplay(catData, i, displayCount);
+            }
+        }
+
+        /// <summary>
+        /// 個別の猫表示を生成
+        /// </summary>
+        private void CreateCatDisplay(CatData catData, int index, int total)
+        {
+            var catObj = new GameObject($"HomeCat_{catData.catName}");
+            catObj.transform.SetParent(catDisplayArea, false);
+
+            var rt = catObj.AddComponent<RectTransform>();
+            // 猫をランダムに配置
+            float xRange = 0.8f;
+            float yRange = 0.6f;
+            float x = (index / (float)Mathf.Max(total - 1, 1)) * xRange + (1f - xRange) * 0.5f;
+            float y = 0.2f + Random.Range(0f, yRange);
+
+            // 中心アンカー
+            rt.anchorMin = new Vector2(x - 0.08f, y - 0.15f);
+            rt.anchorMax = new Vector2(x + 0.08f, y + 0.15f);
+            rt.sizeDelta = Vector2.zero;
+            rt.anchoredPosition = Vector2.zero;
+
+            // 猫画像
+            if (catObj.GetComponent<CanvasRenderer>() == null)
+                catObj.AddComponent<CanvasRenderer>();
+            var image = catObj.AddComponent<Image>();
+            image.sprite = catData.sprite;
+            image.preserveAspect = true;
+            image.raycastTarget = true;
+
+            // タッチ反応テキスト用の子オブジェクト（非表示）
+            var reactionObj = new GameObject("ReactionText");
+            reactionObj.transform.SetParent(catObj.transform, false);
+            var reactionRt = reactionObj.AddComponent<RectTransform>();
+            reactionRt.anchorMin = new Vector2(0f, 1f);
+            reactionRt.anchorMax = new Vector2(1f, 1.6f);
+            reactionRt.sizeDelta = Vector2.zero;
+            reactionRt.anchoredPosition = Vector2.zero;
+
+            var reactionText = reactionObj.AddComponent<TextMeshProUGUI>();
+            reactionText.text = "";
+            reactionText.alignment = TextAlignmentOptions.Center;
+            reactionText.enableAutoSizing = true;
+            reactionText.fontSizeMin = 10;
+            reactionText.fontSizeMax = 24;
+            reactionText.color = Color.white;
+            reactionText.outlineWidth = 0.3f;
+            reactionText.outlineColor = Color.black;
+            reactionObj.SetActive(false);
+
+            // タッチ用ボタン
+            var btn = catObj.AddComponent<Button>();
+            btn.transition = Selectable.Transition.None;
+            var capturedData = catData;
+            var capturedImage = image;
+            var capturedReaction = reactionObj;
+            var capturedReactionText = reactionText;
+            btn.onClick.AddListener(() =>
+            {
+                AudioManager.Instance?.PlayTap();
+                StartCoroutine(PlayCatReaction(capturedImage, capturedReaction, capturedReactionText));
+            });
+
+            // ゆらゆらアニメーション開始
+            StartCoroutine(IdleAnimation(catObj.transform, index));
+
+            displayedCats.Add(catObj);
+        }
+
+        /// <summary>
+        /// 猫タッチ時のリアクション演出
+        /// </summary>
+        private IEnumerator PlayCatReaction(Image catImage, GameObject reactionObj, TextMeshProUGUI reactionText)
+        {
+            // ランダムなリアクションテキスト
+            reactionText.text = touchReactions[Random.Range(0, touchReactions.Length)];
+            reactionObj.SetActive(true);
+
+            var rt = catImage.GetComponent<RectTransform>();
+            var reactionRt = reactionObj.GetComponent<RectTransform>();
+            Vector3 originalScale = rt.localScale;
+
+            // ぴょんと跳ねる
+            float duration = 0.4f;
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+                float jumpY = Mathf.Sin(t * Mathf.PI) * 0.2f;
+                float scaleX = 1f + Mathf.Sin(t * Mathf.PI * 2f) * 0.1f;
+                float scaleY = 1f + Mathf.Cos(t * Mathf.PI * 2f) * 0.1f;
+                rt.localScale = new Vector3(scaleX, scaleY + jumpY, 1f);
+
+                // リアクションテキストを上に浮かせる
+                float alpha = t < 0.5f ? 1f : 1f - (t - 0.5f) * 2f;
+                reactionText.color = new Color(1f, 1f, 1f, alpha);
+                yield return null;
+            }
+
+            rt.localScale = originalScale;
+
+            // テキストをフェードアウト
+            float fadeTime = 0.3f;
+            elapsed = 0f;
+            while (elapsed < fadeTime)
+            {
+                elapsed += Time.deltaTime;
+                float alpha = 1f - (elapsed / fadeTime);
+                reactionText.color = new Color(1f, 1f, 1f, alpha);
+                yield return null;
+            }
+
+            reactionObj.SetActive(false);
+        }
+
+        /// <summary>
+        /// 猫のゆらゆらアイドルアニメーション
+        /// </summary>
+        private IEnumerator IdleAnimation(Transform catTransform, int offset)
+        {
+            float speed = 0.5f + Random.Range(0f, 0.3f);
+            float amplitude = 3f + Random.Range(0f, 2f);
+            float phase = offset * 1.5f;
+
+            while (catTransform != null)
+            {
+                float angle = Mathf.Sin(Time.time * speed + phase) * amplitude;
+                catTransform.localEulerAngles = new Vector3(0, 0, angle);
+                yield return null;
+            }
         }
 
         private void SetupOfflinePopup()
@@ -184,6 +391,7 @@ namespace NekoCollect.UI
         {
             CoinManager.Instance.ClickCoin();
             AudioManager.Instance?.PlayClick();
+            AchievementManager.Instance?.RecordClick();
         }
 
         private void UpdateCoinDisplay(long coins)

@@ -188,7 +188,15 @@ namespace NekoCollect.UI
             if (owned)
             {
                 if (image != null) image.sprite = catData.sprite;
-                if (text != null) text.text = catData.catName;
+                if (text != null)
+                {
+                    text.text = catData.catName;
+                    // レアリティに応じた名前の色
+                    text.color = UIHelper.GetRarityColor(catData.rarity);
+                }
+
+                // レアリティ枠を適用
+                UIHelper.ApplyRarityFrame(card, catData.rarity);
 
                 // タップで詳細ポップアップ
                 var button = card.GetComponent<Button>();

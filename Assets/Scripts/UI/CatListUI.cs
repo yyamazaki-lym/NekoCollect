@@ -95,6 +95,8 @@ namespace NekoCollect.UI
                 texts[0].fontSizeMin = 14;
                 texts[0].fontSizeMax = 28;
                 texts[0].alignment = TextAlignmentOptions.Center;
+                // レアリティに応じた名前の色
+                texts[0].color = UIHelper.GetRarityColor(catData.rarity);
             }
             if (texts.Length > 1)
             {
@@ -104,6 +106,9 @@ namespace NekoCollect.UI
                 texts[1].fontSizeMax = 24;
                 texts[1].alignment = TextAlignmentOptions.Center;
             }
+
+            // レアリティ枠を適用
+            UIHelper.ApplyRarityFrame(card, catData.rarity);
 
             // タップで詳細画面を開く
             var button = card.GetComponent<Button>();
