@@ -108,10 +108,10 @@ namespace NekoCollect.UI
             var areaObj = new GameObject("CatDisplayArea");
             areaObj.transform.SetParent(transform, false);
             var rt = areaObj.AddComponent<RectTransform>();
-            // ナビボタン（y≈0.05〜0.18）の上、コインボタン（y≈0.40〜0.65）の下に配置
-            // ナビボタンと重ならないよう y=0.22 から開始
-            rt.anchorMin = new Vector2(0.02f, 0.22f);
-            rt.anchorMax = new Vector2(0.98f, 0.40f);
+            // コインテキスト（y≈0.66）より上の広い空間に猫を配置
+            // ナビボタン・コインボタンと完全に分離
+            rt.anchorMin = new Vector2(0.02f, 0.72f);
+            rt.anchorMax = new Vector2(0.98f, 0.96f);
             rt.sizeDelta = Vector2.zero;
             rt.anchoredPosition = Vector2.zero;
             catDisplayArea = areaObj.transform;
@@ -161,12 +161,12 @@ namespace NekoCollect.UI
             // 猫をエリア内に均等配置
             float xRange = 0.7f;
             float x = (index / (float)Mathf.Max(total - 1, 1)) * xRange + (1f - xRange) * 0.5f;
-            // Y方向はエリア中央付近にランダム配置
-            float y = 0.35f + Random.Range(0f, 0.30f);
+            // Y方向はエリア内に分散配置
+            float y = 0.25f + Random.Range(0f, 0.50f);
 
             // 猫サイズ（エリア内での相対サイズ）
             float catHalfW = 0.10f;
-            float catHalfH = 0.22f;
+            float catHalfH = 0.18f;
             rt.anchorMin = new Vector2(x - catHalfW, y - catHalfH);
             rt.anchorMax = new Vector2(x + catHalfW, y + catHalfH);
             rt.sizeDelta = Vector2.zero;
