@@ -30,9 +30,32 @@ namespace NekoCollect.UI
         [SerializeField] private Button resultCloseButton;
 
         private GachaBanner selectedBanner;
+        private bool initialized;
 
         private void OnEnable()
         {
+            if (!initialized)
+            {
+                initialized = true;
+
+                // パネル背景を追加
+                SetupPanelBackground();
+
+                // ガチャ結果パネルのセットアップ
+                SetupResultPanel();
+
+                pullButton.onClick.AddListener(OnPull);
+                backButton.onClick.AddListener(() =>
+                {
+                    AudioManager.Instance?.PlayTap();
+                    UIManager.Instance.ShowHome();
+                });
+                resultCloseButton?.onClick.AddListener(() =>
+                {
+                    AudioManager.Instance?.PlayTap();
+                    resultPanel?.SetActive(false);
+                });
+            }
             GachaManager.Instance.OnGachaResult += ShowResult;
             SetupBannerButtons();
             resultPanel?.SetActive(false);
@@ -44,11 +67,44 @@ namespace NekoCollect.UI
                 GachaManager.Instance.OnGachaResult -= ShowResult;
         }
 
-        private void Start()
+        /// <summary>
+        /// パネルに背景色を追加
+        /// </summary>
+        private void SetupPanelBackground()
         {
-            pullButton.onClick.AddListener(OnPull);
-            backButton.onClick.AddListener(() => UIManager.Instance.ShowHome());
-            resultCloseButton?.onClick.AddListener(() => resultPanel?.SetActive(false));
+            var bg = GetComponent<Image>();
+            if (bg == null)
+            {
+                if (GetComponent<CanvasRenderer>() == null)
+                    gameObject.AddComponent<CanvasRenderer>();
+                bg = gameObject.AddComponent<Image>();
+            }
+            bg.color = new Color(0.12f, 0.12f, 0.18f, 1f);
+            bg.raycastTarget = true;
+        }
+
+        /// <summary>
+        /// ガチャ結果パネルを全画面オーバーレイとして設定
+        /// </summary>
+        private void SetupResultPanel()
+        {
+            if (resultPanel == null) return;
+
+            var rt = resultPanel.GetComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.anchoredPosition = Vector2.zero;
+            rt.sizeDelta = Vector2.zero;
+
+            var bg = resultPanel.GetComponent<Image>();
+            if (bg == null)
+            {
+                if (resultPanel.GetComponent<CanvasRenderer>() == null)
+                    resultPanel.AddComponent<CanvasRenderer>();
+                bg = resultPanel.AddComponent<Image>();
+            }
+            bg.color = new Color(0.05f, 0.05f, 0.12f, 0.95f);
+            bg.raycastTarget = true;
         }
 
         private void SetupBannerButtons()
@@ -83,6 +139,7 @@ namespace NekoCollect.UI
         private void OnPull()
         {
             if (selectedBanner == null) return;
+            AudioManager.Instance?.PlayGachaRoll();
             if (!GachaManager.Instance.Pull(selectedBanner))
             {
                 // コイン不足の場合
@@ -92,7 +149,8 @@ namespace NekoCollect.UI
 
         private void ShowResult(CatData cat, bool isNew)
         {
-            resultPanel?.SetActive(true);
+            if (resultPanel == null) return;
+
             resultCatImage.sprite = cat.sprite;
             resultCatName.text = cat.catName;
             resultRarity.text = cat.rarity.ToString();
@@ -106,8 +164,18 @@ namespace NekoCollect.UI
                 _ => Color.white
             };
 
+            // レアリティに応じたSE
+            if (cat.rarity >= Rarity.SR)
+                AudioManager.Instance?.PlayGachaRare();
+            else
+                AudioManager.Instance?.PlayGachaResult();
+
             resultNewLabel.text = isNew ? "NEW!" : "経験値ボーナス!";
             resultNewLabel.gameObject.SetActive(true);
+
+            // 最前面に表示
+            resultPanel.transform.SetAsLastSibling();
+            resultPanel.SetActive(true);
         }
     }
 }

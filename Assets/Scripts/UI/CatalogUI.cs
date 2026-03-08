@@ -25,16 +25,126 @@ namespace NekoCollect.UI
         [SerializeField] private TextMeshProUGUI detailDescription;
         [SerializeField] private Button detailCloseButton;
 
+        private bool initialized;
+
         private void OnEnable()
         {
+            if (!initialized)
+            {
+                initialized = true;
+
+                // パネル背景を追加
+                SetupPanelBackground();
+
+                // ポップアップの見た目を修正
+                SetupDetailPopup();
+
+                backButton.onClick.AddListener(() =>
+                {
+                    AudioManager.Instance?.PlayTap();
+                    UIManager.Instance.ShowHome();
+                });
+                detailCloseButton?.onClick.AddListener(() =>
+                {
+                    AudioManager.Instance?.PlayTap();
+                    detailPopup?.SetActive(false);
+                });
+            }
             RefreshCatalog();
             detailPopup?.SetActive(false);
         }
 
-        private void Start()
+        /// <summary>
+        /// パネルに背景色を追加
+        /// </summary>
+        private void SetupPanelBackground()
         {
-            backButton.onClick.AddListener(() => UIManager.Instance.ShowHome());
-            detailCloseButton?.onClick.AddListener(() => detailPopup?.SetActive(false));
+            var bg = GetComponent<Image>();
+            if (bg == null)
+            {
+                if (GetComponent<CanvasRenderer>() == null)
+                    gameObject.AddComponent<CanvasRenderer>();
+                bg = gameObject.AddComponent<Image>();
+            }
+            bg.color = new Color(0.12f, 0.12f, 0.18f, 1f);
+            bg.raycastTarget = true;
+        }
+
+        /// <summary>
+        /// 詳細ポップアップをフルスクリーンオーバーレイとして設定
+        /// </summary>
+        private void SetupDetailPopup()
+        {
+            if (detailPopup == null) return;
+
+            // ストレッチアンカーで全画面オーバーレイにする
+            var rt = detailPopup.GetComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.anchoredPosition = Vector2.zero;
+            rt.sizeDelta = Vector2.zero;
+
+            // 背景Imageを追加
+            var bg = detailPopup.GetComponent<Image>();
+            if (bg == null)
+            {
+                if (detailPopup.GetComponent<CanvasRenderer>() == null)
+                    detailPopup.AddComponent<CanvasRenderer>();
+                bg = detailPopup.AddComponent<Image>();
+            }
+            bg.color = new Color(0.08f, 0.08f, 0.15f, 0.95f);
+            bg.raycastTarget = true;
+
+            // 子要素の位置を調整
+            SetRect(detailImage, 0.2f, 0.55f, 0.8f, 0.85f);
+            if (detailImage != null) detailImage.preserveAspect = true;
+
+            SetRect(detailName, 0.1f, 0.45f, 0.9f, 0.55f);
+            if (detailName != null)
+            {
+                detailName.alignment = TextAlignmentOptions.Center;
+                detailName.enableAutoSizing = true;
+                detailName.fontSizeMin = 18;
+                detailName.fontSizeMax = 48;
+            }
+
+            SetRect(detailRarity, 0.2f, 0.38f, 0.8f, 0.45f);
+            if (detailRarity != null)
+            {
+                detailRarity.alignment = TextAlignmentOptions.Center;
+                detailRarity.enableAutoSizing = true;
+                detailRarity.fontSizeMin = 14;
+                detailRarity.fontSizeMax = 36;
+            }
+
+            SetRect(detailDescription, 0.1f, 0.22f, 0.9f, 0.38f);
+            if (detailDescription != null)
+            {
+                detailDescription.alignment = TextAlignmentOptions.Center;
+                detailDescription.enableAutoSizing = true;
+                detailDescription.fontSizeMin = 12;
+                detailDescription.fontSizeMax = 28;
+            }
+
+            SetRect(detailCloseButton, 0.35f, 0.12f, 0.65f, 0.16f);
+            var btnText = detailCloseButton?.GetComponentInChildren<TextMeshProUGUI>();
+            if (btnText != null)
+            {
+                btnText.enableAutoSizing = true;
+                btnText.fontSizeMin = 16;
+                btnText.fontSizeMax = 30;
+            }
+        }
+
+        private void SetRect(Component comp, float xMin, float yMin, float xMax, float yMax)
+        {
+            if (comp == null) return;
+            var rt = comp.GetComponent<RectTransform>();
+            if (rt == null) return;
+            rt.anchorMin = new Vector2(xMin, yMin);
+            rt.anchorMax = new Vector2(xMax, yMax);
+            rt.anchoredPosition = Vector2.zero;
+            rt.sizeDelta = Vector2.zero;
         }
 
         private void RefreshCatalog()
@@ -73,7 +183,11 @@ namespace NekoCollect.UI
                 var button = card.GetComponent<Button>();
                 if (button == null) button = card.AddComponent<Button>();
                 var captured = catData;
-                button.onClick.AddListener(() => ShowDetail(captured));
+                button.onClick.AddListener(() =>
+                {
+                    AudioManager.Instance?.PlayTap();
+                    ShowDetail(captured);
+                });
             }
             else
             {
@@ -89,11 +203,16 @@ namespace NekoCollect.UI
 
         private void ShowDetail(CatData catData)
         {
-            detailPopup?.SetActive(true);
+            if (detailPopup == null) return;
+
             detailImage.sprite = catData.sprite;
             detailName.text = catData.catName;
             detailRarity.text = catData.rarity.ToString();
             detailDescription.text = catData.description;
+
+            // 最前面に表示
+            detailPopup.transform.SetAsLastSibling();
+            detailPopup.SetActive(true);
         }
     }
 }
