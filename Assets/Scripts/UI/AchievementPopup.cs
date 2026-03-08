@@ -107,8 +107,8 @@ namespace NekoCollect.UI
 
         private IEnumerator ShowPopupCoroutine(AchievementDef achievement)
         {
-            titleText.text = $"🏆 {achievement.title}";
-            descText.text = $"{achievement.description} (+{achievement.coinReward}コイン)";
+            titleText.text = $"クリア！ {achievement.title}";
+            descText.text = $"{achievement.description}（+{achievement.coinReward}コイン）";
 
             popupObj.SetActive(true);
             popupObj.transform.SetAsLastSibling();

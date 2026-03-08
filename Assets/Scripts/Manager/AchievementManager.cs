@@ -70,35 +70,37 @@ namespace NekoCollect.Manager
         /// </summary>
         private void InitAchievements()
         {
+            // ※テキストはフォントアトラスに含まれる文字のみ使用
+            //  （ひらがな・カタカナ・数字・ASCII記号＋特定の漢字のみ対応）
             allAchievements = new List<AchievementDef>
             {
-                // ガチャ系
-                new AchievementDef { id = "first_gacha", title = "はじめてのガチャ", description = "ガチャを1回引いた", coinReward = 100 },
-                new AchievementDef { id = "gacha_10", title = "ガチャマスター", description = "ガチャを10回引いた", coinReward = 300 },
-                new AchievementDef { id = "gacha_50", title = "ガチャ中毒", description = "ガチャを50回引いた", coinReward = 1000 },
+                // ガチャけい
+                new AchievementDef { id = "first_gacha", title = "はじめてのガチャ", description = "ガチャを1かいひいた", coinReward = 100 },
+                new AchievementDef { id = "gacha_10", title = "ガチャマスター", description = "ガチャを10かいひいた", coinReward = 300 },
+                new AchievementDef { id = "gacha_50", title = "ガチャだいすき", description = "ガチャを50かいひいた", coinReward = 1000 },
 
-                // コレクション系
-                new AchievementDef { id = "collect_1", title = "はじめてのねこ", description = "猫を1匹集めた", coinReward = 50 },
-                new AchievementDef { id = "collect_3", title = "ねこ好き", description = "猫を3匹集めた", coinReward = 200 },
-                new AchievementDef { id = "collect_5", title = "ねこコレクター", description = "猫を5匹集めた", coinReward = 500 },
-                new AchievementDef { id = "collect_all", title = "コンプリート！", description = "全ての猫を集めた", coinReward = 3000 },
+                // コレクションけい
+                new AchievementDef { id = "collect_1", title = "はじめてのねこ", description = "猫を1ひきゲット", coinReward = 50 },
+                new AchievementDef { id = "collect_3", title = "ねこだいすき", description = "猫を3ひきゲット", coinReward = 200 },
+                new AchievementDef { id = "collect_5", title = "ねこコレクター", description = "猫を5ひきゲット", coinReward = 500 },
+                new AchievementDef { id = "collect_all", title = "コンプリート！", description = "すべての猫をゲット", coinReward = 3000 },
 
-                // レアリティ系
-                new AchievementDef { id = "get_r", title = "レア発見", description = "R以上の猫を入手した", coinReward = 100 },
-                new AchievementDef { id = "get_sr", title = "スーパーレア！", description = "SR以上の猫を入手した", coinReward = 500 },
-                new AchievementDef { id = "get_ssr", title = "伝説の猫", description = "SSRの猫を入手した", coinReward = 1000 },
+                // レアリティけい
+                new AchievementDef { id = "get_r", title = "レアねこゲット", description = "Rいじょうの猫をゲット", coinReward = 100 },
+                new AchievementDef { id = "get_sr", title = "スーパーレア！", description = "SRいじょうの猫をゲット", coinReward = 500 },
+                new AchievementDef { id = "get_ssr", title = "伝説の猫", description = "SSRの猫をゲット", coinReward = 1000 },
 
-                // 育成系
-                new AchievementDef { id = "level_5", title = "育成初心者", description = "猫をLv.5にした", coinReward = 100 },
-                new AchievementDef { id = "level_10", title = "育成上手", description = "猫をLv.10にした", coinReward = 300 },
-                new AchievementDef { id = "level_max", title = "育成マスター", description = "猫を最大レベルにした", coinReward = 1000 },
+                // そだてけい
+                new AchievementDef { id = "level_5", title = "そだて上手", description = "猫をLv.5にした", coinReward = 100 },
+                new AchievementDef { id = "level_10", title = "そだてマスター", description = "猫をLv.10にした", coinReward = 300 },
+                new AchievementDef { id = "level_max", title = "レベルマックス", description = "猫をMAXレベルにした", coinReward = 1000 },
 
-                // 進化系
+                // 進化けい
                 new AchievementDef { id = "first_evolve", title = "はじめての進化", description = "猫を進化させた", coinReward = 500 },
 
-                // クリック系
-                new AchievementDef { id = "click_100", title = "コインタッパー", description = "100回タップした", coinReward = 100 },
-                new AchievementDef { id = "click_1000", title = "コインマニア", description = "1000回タップした", coinReward = 500 },
+                // クリックけい
+                new AchievementDef { id = "click_100", title = "コインタッパー", description = "100かいタップした", coinReward = 100 },
+                new AchievementDef { id = "click_1000", title = "コインマニア", description = "1000かいタップした", coinReward = 500 },
             };
         }
 

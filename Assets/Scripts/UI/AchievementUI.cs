@@ -130,7 +130,7 @@ namespace NekoCollect.UI
             // 進捗表示
             if (progressText != null && achievements.Count > 0)
             {
-                progressText.text = $"実績: {unlocked} / {achievements.Count} ({100f * unlocked / achievements.Count:F0}%)";
+                progressText.text = $"クリア: {unlocked}／{achievements.Count}（{100f * unlocked / achievements.Count:F0}％）";
             }
         }
 
@@ -199,7 +199,7 @@ namespace NekoCollect.UI
             }
             if (texts.Length > 1)
             {
-                texts[1].text = unlocked ? $"{ach.description} (+{ach.coinReward}コイン)" : "???";
+                texts[1].text = unlocked ? $"{ach.description}（+{ach.coinReward}コイン）" : "???";
                 texts[1].color = unlocked ? Color.white : new Color(0.5f, 0.5f, 0.5f);
             }
 
