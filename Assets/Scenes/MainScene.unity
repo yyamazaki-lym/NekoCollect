@@ -10084,6 +10084,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2126246730}
   m_CullTransparentMesh: 1
+--- !u!1 &800000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 800000002}
+  - component: {fileID: 800000003}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &800000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &800000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 301f9829ebf545859db75b1ac30134bc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  bgmMain: {fileID: 8300000, guid: df1f7df79df347b487e54a4a29f0da72, type: 3}
+  bgmVolume: 0.4
+  seClick: {fileID: 8300000, guid: 63538bcfbec741cd86028a0ab33146a1, type: 3}
+  seCoin: {fileID: 8300000, guid: 9ba32417450d49e8b050fa303d41f35f, type: 3}
+  seTap: {fileID: 8300000, guid: e325e721a3eb4dd7a55d01ceafd33c12, type: 3}
+  seGachaRoll: {fileID: 8300000, guid: cc08a938bc6c4d2a841f8469f9f07417, type: 3}
+  seGachaResult: {fileID: 8300000, guid: 82e7e76bdd4b490fbe3aacce8c158cdb, type: 3}
+  seGachaRare: {fileID: 8300000, guid: 4adc982bfba74a0dac5216eff054c72d, type: 3}
+  seFeed: {fileID: 8300000, guid: 18b08d809bc44474928f8f63892e32a1, type: 3}
+  seLevelUp: {fileID: 8300000, guid: ffc5030f007a49daa8fc00b036c8dac9, type: 3}
+  seEvolve: {fileID: 8300000, guid: 5ba91efc34e1402aa1e923ec5f997962, type: 3}
+  seBonus: {fileID: 8300000, guid: 3bfc65a975314fd99026cdf920499c5d, type: 3}
+  seVolume: 0.7
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -10093,3 +10150,4 @@ SceneRoots:
   - {fileID: 1903792048}
   - {fileID: 1200111181}
   - {fileID: 1609569310}
+  - {fileID: 800000002}
