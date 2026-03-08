@@ -108,9 +108,11 @@ namespace NekoCollect.UI
             var areaObj = new GameObject("CatDisplayArea");
             areaObj.transform.SetParent(transform, false);
             var rt = areaObj.AddComponent<RectTransform>();
-            // 中央エリア（ボタンの間）
-            rt.anchorMin = new Vector2(0.05f, 0.25f);
-            rt.anchorMax = new Vector2(0.95f, 0.65f);
+            // コインボタンの下〜ナビゲーションボタンの上のエリアに配置
+            // （コインボタンはy=0.4〜0.65付近、ナビボタンはy=0.13〜0.2付近）
+            // 猫は画面下部に配置してコインと重ならないようにする
+            rt.anchorMin = new Vector2(0.02f, 0.02f);
+            rt.anchorMax = new Vector2(0.98f, 0.40f);
             rt.sizeDelta = Vector2.zero;
             rt.anchoredPosition = Vector2.zero;
             catDisplayArea = areaObj.transform;
@@ -157,15 +159,17 @@ namespace NekoCollect.UI
             catObj.transform.SetParent(catDisplayArea, false);
 
             var rt = catObj.AddComponent<RectTransform>();
-            // 猫をランダムに配置
-            float xRange = 0.8f;
-            float yRange = 0.6f;
+            // 猫をエリア内にランダム配置（ナビボタンの手前に収まるように）
+            float xRange = 0.7f;
             float x = (index / (float)Mathf.Max(total - 1, 1)) * xRange + (1f - xRange) * 0.5f;
-            float y = 0.2f + Random.Range(0f, yRange);
+            // Y方向はエリア上部寄りに配置（下部はナビボタン領域）
+            float y = 0.45f + Random.Range(0f, 0.35f);
 
-            // 中心アンカー
-            rt.anchorMin = new Vector2(x - 0.08f, y - 0.15f);
-            rt.anchorMax = new Vector2(x + 0.08f, y + 0.15f);
+            // 猫サイズ（エリア内での相対サイズ）
+            float catHalfW = 0.10f;
+            float catHalfH = 0.20f;
+            rt.anchorMin = new Vector2(x - catHalfW, y - catHalfH);
+            rt.anchorMax = new Vector2(x + catHalfW, y + catHalfH);
             rt.sizeDelta = Vector2.zero;
             rt.anchoredPosition = Vector2.zero;
 
@@ -178,11 +182,12 @@ namespace NekoCollect.UI
             image.raycastTarget = true;
 
             // タッチ反応テキスト用の子オブジェクト（非表示）
+            // 猫の上部に吹き出し風に表示（横幅を広げてはみ出し対応）
             var reactionObj = new GameObject("ReactionText");
             reactionObj.transform.SetParent(catObj.transform, false);
             var reactionRt = reactionObj.AddComponent<RectTransform>();
-            reactionRt.anchorMin = new Vector2(0f, 1f);
-            reactionRt.anchorMax = new Vector2(1f, 1.6f);
+            reactionRt.anchorMin = new Vector2(-0.5f, 1.0f);
+            reactionRt.anchorMax = new Vector2(1.5f, 1.8f);
             reactionRt.sizeDelta = Vector2.zero;
             reactionRt.anchoredPosition = Vector2.zero;
 

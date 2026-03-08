@@ -29,6 +29,9 @@ namespace NekoCollect.UI
 
         private void Start()
         {
+            // フォントの日本語文字を事前ロード（□□表示防止）
+            UIHelper.EnsureFontCharacters();
+
             // フェードオーバーレイを作成
             SetupFadeOverlay();
 
