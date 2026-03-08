@@ -12,7 +12,6 @@ namespace NekoCollect.UI
     {
         [Header("UI参照")]
         [SerializeField] private Transform achievementListContainer;
-        [SerializeField] private GameObject achievementItemPrefab;
         [SerializeField] private TextMeshProUGUI progressText;
         [SerializeField] private Button backButton;
 
@@ -27,11 +26,17 @@ namespace NekoCollect.UI
                 // パネル背景を追加
                 SetupPanelBackground();
 
-                backButton.onClick.AddListener(() =>
+                // リストコンテナにレイアウトコンポーネントを確保
+                EnsureListLayout();
+
+                if (backButton != null)
                 {
-                    AudioManager.Instance?.PlayTap();
-                    UIManager.Instance.ShowHome();
-                });
+                    backButton.onClick.AddListener(() =>
+                    {
+                        AudioManager.Instance?.PlayTap();
+                        UIManager.Instance.ShowHome();
+                    });
+                }
             }
             RefreshList();
         }
@@ -64,15 +69,52 @@ namespace NekoCollect.UI
             bg.raycastTarget = true;
         }
 
+        /// <summary>
+        /// リストコンテナにVerticalLayoutGroupとContentSizeFitterを確保
+        /// </summary>
+        private void EnsureListLayout()
+        {
+            if (achievementListContainer == null) return;
+
+            var containerObj = achievementListContainer.gameObject;
+
+            // VerticalLayoutGroupがなければ追加
+            var vlg = containerObj.GetComponent<VerticalLayoutGroup>();
+            if (vlg == null)
+            {
+                vlg = containerObj.AddComponent<VerticalLayoutGroup>();
+            }
+            vlg.padding = new RectOffset(10, 10, 10, 10);
+            vlg.spacing = 10f;
+            vlg.childAlignment = TextAnchor.UpperCenter;
+            vlg.childForceExpandWidth = true;
+            vlg.childForceExpandHeight = false;
+            vlg.childControlWidth = true;
+            vlg.childControlHeight = false;
+
+            // ContentSizeFitterがなければ追加（スクロール用）
+            var csf = containerObj.GetComponent<ContentSizeFitter>();
+            if (csf == null)
+            {
+                csf = containerObj.AddComponent<ContentSizeFitter>();
+            }
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        }
+
         private void RefreshList()
         {
             if (achievementListContainer == null) return;
+
+            // AchievementManagerが初期化されていない場合はスキップ
+            if (AchievementManager.Instance == null) return;
 
             // 既存のアイテムをクリア
             foreach (Transform child in achievementListContainer)
                 Destroy(child.gameObject);
 
             var achievements = AchievementManager.Instance.GetAllAchievements();
+            if (achievements == null) return;
+
             int unlocked = 0;
 
             foreach (var ach in achievements)
@@ -80,15 +122,71 @@ namespace NekoCollect.UI
                 bool isUnlocked = AchievementManager.Instance.IsUnlocked(ach.id);
                 if (isUnlocked) unlocked++;
 
-                var item = Instantiate(achievementItemPrefab, achievementListContainer);
+                // プログラムでアイテムを生成（Prefab不要）
+                var item = CreateAchievementItem(achievementListContainer);
                 SetupAchievementItem(item, ach, isUnlocked);
             }
 
             // 進捗表示
-            if (progressText != null)
+            if (progressText != null && achievements.Count > 0)
             {
                 progressText.text = $"実績: {unlocked} / {achievements.Count} ({100f * unlocked / achievements.Count:F0}%)";
             }
+        }
+
+        /// <summary>
+        /// 実績アイテムをプログラムで生成
+        /// </summary>
+        private GameObject CreateAchievementItem(Transform parent)
+        {
+            var item = new GameObject("AchievementItem");
+            item.transform.SetParent(parent, false);
+
+            // RectTransform設定
+            var rt = item.AddComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
+            rt.sizeDelta = new Vector2(0f, 80f);
+
+            // 背景
+            if (item.GetComponent<CanvasRenderer>() == null)
+                item.AddComponent<CanvasRenderer>();
+            var bg = item.AddComponent<Image>();
+            bg.color = new Color(0.1f, 0.1f, 0.15f, 0.5f);
+            bg.raycastTarget = false;
+
+            // タイトルテキスト
+            var titleObj = new GameObject("Title");
+            titleObj.transform.SetParent(item.transform, false);
+            var titleRt = titleObj.AddComponent<RectTransform>();
+            titleRt.anchorMin = new Vector2(0.03f, 0.5f);
+            titleRt.anchorMax = new Vector2(0.97f, 0.95f);
+            titleRt.sizeDelta = Vector2.zero;
+            titleRt.anchoredPosition = Vector2.zero;
+            var titleTmp = titleObj.AddComponent<TextMeshProUGUI>();
+            titleTmp.text = "";
+            titleTmp.alignment = TextAlignmentOptions.Left;
+            titleTmp.enableAutoSizing = true;
+            titleTmp.fontSizeMin = 12;
+            titleTmp.fontSizeMax = 24;
+
+            // 説明テキスト
+            var descObj = new GameObject("Description");
+            descObj.transform.SetParent(item.transform, false);
+            var descRt = descObj.AddComponent<RectTransform>();
+            descRt.anchorMin = new Vector2(0.03f, 0.05f);
+            descRt.anchorMax = new Vector2(0.97f, 0.5f);
+            descRt.sizeDelta = Vector2.zero;
+            descRt.anchoredPosition = Vector2.zero;
+            var descTmp = descObj.AddComponent<TextMeshProUGUI>();
+            descTmp.text = "";
+            descTmp.alignment = TextAlignmentOptions.Left;
+            descTmp.enableAutoSizing = true;
+            descTmp.fontSizeMin = 10;
+            descTmp.fontSizeMax = 18;
+
+            return item;
         }
 
         private void SetupAchievementItem(GameObject item, AchievementDef ach, bool unlocked)
@@ -97,19 +195,11 @@ namespace NekoCollect.UI
             if (texts.Length > 0)
             {
                 texts[0].text = unlocked ? ach.title : "？？？";
-                texts[0].enableAutoSizing = true;
-                texts[0].fontSizeMin = 12;
-                texts[0].fontSizeMax = 24;
-                texts[0].alignment = TextAlignmentOptions.Left;
                 texts[0].color = unlocked ? new Color(1f, 0.9f, 0.3f) : Color.gray;
             }
             if (texts.Length > 1)
             {
                 texts[1].text = unlocked ? $"{ach.description} (+{ach.coinReward}コイン)" : "???";
-                texts[1].enableAutoSizing = true;
-                texts[1].fontSizeMin = 10;
-                texts[1].fontSizeMax = 18;
-                texts[1].alignment = TextAlignmentOptions.Left;
                 texts[1].color = unlocked ? Color.white : new Color(0.5f, 0.5f, 0.5f);
             }
 

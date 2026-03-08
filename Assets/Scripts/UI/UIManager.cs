@@ -51,6 +51,7 @@ namespace NekoCollect.UI
         private void SetupFadeOverlay()
         {
             var canvas = GetComponentInParent<Canvas>();
+            if (canvas == null) canvas = FindFirstObjectByType<Canvas>();
             if (canvas == null) return;
 
             var fadeObj = new GameObject("FadeOverlay");

@@ -37,7 +37,7 @@ namespace NekoCollect.UI
         {
             // Canvas直下に配置
             var canvas = GetComponentInParent<Canvas>();
-            if (canvas == null) canvas = FindObjectOfType<Canvas>();
+            if (canvas == null) canvas = FindFirstObjectByType<Canvas>();
             if (canvas == null) return;
 
             popupObj = new GameObject("AchievementPopup");

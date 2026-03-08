@@ -28,11 +28,31 @@ namespace NekoCollect.Manager
             {
                 string json = PlayerPrefs.GetString(SAVE_KEY);
                 CurrentData = JsonUtility.FromJson<SaveData>(json);
+                // JsonUtilityは新規フィールドをnullのままにする場合があるので安全に初期化
+                EnsureDataIntegrity();
             }
             else
             {
                 CurrentData = new SaveData();
                 CurrentData.LastLoginTime = System.DateTime.Now;
+            }
+        }
+
+        /// <summary>
+        /// デシリアライズ後にnullになりうるListフィールドを安全に初期化
+        /// </summary>
+        private void EnsureDataIntegrity()
+        {
+            if (CurrentData.ownedCats == null)
+                CurrentData.ownedCats = new System.Collections.Generic.List<OwnedCatData>();
+            if (CurrentData.unlockedAchievements == null)
+                CurrentData.unlockedAchievements = new System.Collections.Generic.List<string>();
+
+            // 各猫データのスキルリストも確認
+            foreach (var cat in CurrentData.ownedCats)
+            {
+                if (cat.learnedSkillIndices == null)
+                    cat.learnedSkillIndices = new System.Collections.Generic.List<int>();
             }
         }
 
